@@ -1,0 +1,127 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+    <h1>User Registration</h1>
+    <p>Please enter the following information to register for our website</p>
+    <form id="theForm">
+      <p>Title
+        <input type="radio" name="title" value="Mr" tabindex="1" title="Mr">Mr
+        <input type="radio" name="title" value="Mrs" tabindex="2" title="Mrs">Mrs
+        <input type="radio" name="title" value="Miss" tabindex="3" title="Miss">Miss
+        <input type="radio" name="title" value="Dr" tabindex="4" title="Dr">Dr
+        <input type="radio" name="title" value="Prof" tabindex="5" title="Prof">Prof
+       </p>
+       <p>First Name
+        <input type="text" name="first_name" size="20" tabindex="6" title="First Name" placeholder="First Name">
+        </p>
+        <p>Last Name
+        <input type="text" name="last_name" size="20" tabindex="7" title="Last Name" placeholder="Last Name">
+        </p>
+        <p>Email Address
+        <input type="email" name="email_address" size="20" tabindex="8" title="Email Address" placeholder="Email Address">
+        </p>
+        <p>Phone Number
+        <input type="tel" name="phone_number" size="20" tabindex="9" title="Phone Number" placeholder="Phone Number">
+        </p>
+        <p>Username
+        <input type="text" name="username" size="20" tabindex="10" title="Username" placeholder="Username">
+        </p>
+        <p>Age
+            <input type="number" name="age" size="2" tabindex="11" title="age" placeholder="age" max="100" min="18">
+        </p>
+    
+   <button type="button" onClick="registerNow();">Register Now</button>
+    </form>
+
+    <!-- <button type="submit" tabindex="12" title="Register Now" onclick="registerNow();">Register Now</button> -->
+   
+    <div id="theResults" style="display: none;">
+        <h2>Registration Successful</h2>
+        <table style="border: 4px solid black;">
+            <tr>
+                <th>Title</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email Address</th>
+                <th>Phone Number</th>
+                <th>Username</th>
+                <th>Age</th>
+            </tr>
+            <tr>
+                <td id="results_title"></td>
+                <td id="results_first_name"></td>
+                <td id="results_last_name"></td>
+                <td id="results_email_address"></td>
+                <td id="results_phone_number"></td>
+                <td id="results_username"></td>
+                <td id="results_age"></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        async function registerNow() {
+            
+            const theForm = document.getElementById('theForm');
+            const userInfo = {
+              title: theForm.elements['title'].value,
+              first_name: theForm.elements['first_name'].value,
+              last_name: theForm.elements["last_name"].value,
+              email_address: theForm.elements["email_address"].value,
+              phone_number: theForm.elements["phone_number"].value,
+              username: theForm.elements["username"].value,
+              age: theForm.elements["age"].value
+            };
+
+           console.log("userInfo to be sent to server", userInfo);
+
+           const myHeaders = new Headers();
+           myHeaders.append("Content-Type", "application/json");
+
+           const request = new Request("/register", {
+                method: "POST",
+                body: JSON.stringify(userInfo),
+                headers: myHeaders     
+           });
+
+           console.log(JSON.stringify(request));
+
+           try{
+             const response = await fetch(request);
+             if (!response.ok) {
+                 throw new Error(`HTTP error! status: ${response.status}`);
+             }
+            
+             console.log("Response from server", response);  
+            // textResponse = await response.text();
+
+             const textResponse = await response.json();
+         
+        //   const resJson = JSON.parse(textResponse);
+
+
+         // console.log("results from server", JSON.stringify(resJson));
+
+          document.getElementById("results_title").innerHTML = textResponse.title;
+          document.getElementById("results_first_name").innerHTML = textResponse.first_name;
+          document.getElementById("results_last_name").innerHTML = textResponse.last_name;
+          document.getElementById("results_age").innerHTML = textResponse.age;
+          document.getElementById("results_email_address").innerHTML = textResponse.email_address;
+          document.getElementById("results_phone_number").innerHTML = textResponse.phone_number;
+          document.getElementById("results_username").innerHTML = textResponse.username;
+          document.getElementById("theResults").style.display = "";
+
+        }
+        catch(error) {
+               console.error("Error:", error);
+               return;
+           }
+    }
+    </script>
+</body>
+</html>
