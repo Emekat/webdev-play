@@ -35,7 +35,7 @@ app.post('/register', (inRequest, inResponse) => {
   inResponse.send(responseObj)
 });
 
-// app.post('/register', (req, res) => {
+// app.post('/registerBody', (req, res) => {
 //     res.send(`<html>
 //         <head>
 //         <title style="border: 5px solid black;">Registration Successful</title>
