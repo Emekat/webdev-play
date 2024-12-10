@@ -1,19 +1,11 @@
 const express = require("express");
 const app = express();
 
-//app.use(express.urlencoded());
-
 app.use(express.json());
 
 app.get("/", function(req, res){
     res.sendFile(__dirname + "/index.html");    
 });
-
-
-// app.get('/styles.css', (req, res) => {
-//   res.sendFile(`${__dirname}/styles.css`)
-// })
-
 
 app.get('/styles.css', (inRequest, inResponse) => {
   inResponse.sendFile(`${__dirname}/styles.css`)
@@ -35,6 +27,9 @@ app.post('/register', (inRequest, inResponse) => {
   inResponse.send(responseObj)
 });
 
+
+//set html to call this endpoint with the METHOD attribute of html form 
+//add the urlencoded middleware to the express app
 // app.post('/registerBody', (req, res) => {
 //     res.send(`<html>
 //         <head>
