@@ -9,7 +9,7 @@ app.get("/", function(req, res){
 
 app.get('/styles.css', (inRequest, inResponse) => {
   inResponse.sendFile(`${__dirname}/styles.css`)
-})
+});
 
 app.post('/register', (inRequest, inResponse) => {
   const responseObj = {
